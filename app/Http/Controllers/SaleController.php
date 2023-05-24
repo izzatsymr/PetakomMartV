@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Http\Requests\SaleStoreRequest;
 use App\Http\Requests\SaleUpdateRequest;
+use App\Models\Product;
 
 class SaleController extends Controller
 {
@@ -39,9 +40,11 @@ class SaleController extends Controller
 
         $users = User::pluck('name', 'id');
         $paymentMethods = PaymentMethod::pluck('name', 'id');
+        $products = Product::pluck('name', 'id');
 
-        return view('app.sales.create', compact('users', 'paymentMethods'));
+        return view('app.sales.create', compact('users', 'paymentMethods', 'products'));
     }
+
 
     /**
      * @param \App\Http\Requests\SaleStoreRequest $request
@@ -55,10 +58,26 @@ class SaleController extends Controller
 
         $sale = Sale::create($validated);
 
+        $productId = $request->input('product_id');
+        $quantity = $request->input('quantity');
+        $totalPrice = $request->input('total_price');
+
+        $productSales = [
+            $productId => [
+                'quantity' => $quantity,
+                'total_price' => $totalPrice,
+            ]
+        ];
+
+        $sale = Sale::create($validated);
+        $sale->products()->attach($productSales);
+
+
         return redirect()
             ->route('sales.edit', $sale)
             ->withSuccess(__('crud.common.created'));
     }
+
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -76,6 +95,7 @@ class SaleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Sale $sale
      * @return \Illuminate\Http\Response
+     * 
      */
     public function edit(Request $request, Sale $sale)
     {
@@ -83,10 +103,11 @@ class SaleController extends Controller
 
         $users = User::pluck('name', 'id');
         $paymentMethods = PaymentMethod::pluck('name', 'id');
+        $products = Product::pluck('name', 'id');
 
         return view(
             'app.sales.edit',
-            compact('sale', 'users', 'paymentMethods')
+            compact('sale', 'users', 'paymentMethods', 'products')
         );
     }
 
@@ -100,6 +121,20 @@ class SaleController extends Controller
         $this->authorize('update', $sale);
 
         $validated = $request->validated();
+
+        $productId = $request->input('product_id');
+        $quantity = $request->input('quantity');
+        $totalPrice = $request->input('total_price');
+
+        $productSales = [
+            $productId => [
+                'quantity' => $quantity,
+                'total_price' => $totalPrice,
+            ]
+        ];
+
+        $sale = Sale::create($validated);
+        $sale->products()->attach($productSales);
 
         $sale->update($validated);
 
