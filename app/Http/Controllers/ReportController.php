@@ -28,9 +28,23 @@ class ReportController extends Controller
         return view('app.reports.StaffReport');
     }
 
-    public function GenerateProductReport()
+    public function GenerateProductReport(Request $request)
     {
-        return view('app.reports.GenerateProductReport');
+        $searchInput = $request->input('searchInput');
+
+        $query = Product::join('inventories', 'products.id', '=', 'inventories.product_id')
+        ->select('products.id', 'products.name', 'products.description', 'products.price', 'products.image', 'inventories.stock_quantity', 'inventories.created_at', 'inventories.updated_at');
+
+        if ($searchInput) {
+        $query->where(function ($q) use ($searchInput) {
+            $q->where('products.id', $searchInput)
+              ->orWhere('products.name', 'like', "%$searchInput%");
+        });
+    }
+
+    $products = $query->get();
+
+    return view('app.reports.GenerateProductReport', ['products' => $products]);
     }
     public function GenerateSalesReport()
     {

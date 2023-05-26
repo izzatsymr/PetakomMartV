@@ -42,15 +42,13 @@ Route::prefix('/')
         Route::view('reports', 'reports.index')->name('reports.index');
 
         Route::view('reports/ProductReport', 'reports.ProductReport')->name('reports.ProductReport');
-        Route::get('/GenerateProductReport', [ReportController::class, 'GenerateProductReport'])->name('generate.product.report');
+        Route::get('reports/GenerateProductReport', [ReportController::class, 'GenerateProductReport'])->name('generate.product.report');
 
         Route::view('reports/SalesReport', 'reports.SalesReport')->name('reports.SalesReport');
-        #Route::view('/GenerateSalesReport', 'reports.GenerateSalesReport')->name('reports.GenerateSalesReport');
-        #Route::view('reports/ShowSalesReport', 'reports.ShowSalesReport')->name('reports.ShowSalesReport');
-
+        Route::view('reports/GenerateSalesReport', 'reports.GenerateSalesReport')->name('reports.GenerateSalesReport');
+    
         Route::view('reports/StaffReport', 'reports.StaffReport')->name('reports.StaffReport');
-        #Route::view('reports/GenerateStaffReport', 'reports.GenerateStaffReport')->name('reports.GenerateStaffReport');
-        #Route::view('reports/ShowStaffReport', 'reports.ShowStaffReport')->name('reports.ShowStaffReport');
+        Route::view('reports/GenerateStaffReport', 'reports.GenerateStaffReport')->name('reports.GenerateStaffReport');
     });
 
 Route::prefix('/')
