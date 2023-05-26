@@ -18,6 +18,9 @@
                 </div>
 
                 <x-nav-dropdown title="Apps" align="right" width="48">
+                        <x-dropdown-link href="{{ route('reports.index') }}">
+                        Reports
+                        </x-dropdown-link>
                         @can('view-any', App\Models\Cash::class)
                         <x-dropdown-link href="{{ route('all-cash.index') }}">
                         All Cash

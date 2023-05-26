@@ -12,6 +12,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,24 @@ Route::middleware(['auth:sanctum', 'verified'])
         return view('dashboard');
     })
     ->name('dashboard');
+
+Route::prefix('/')
+    ->middleware(['auth:sanctum', 'verified'])
+    ->group(function () {
+        
+        Route::view('reports', 'reports.index')->name('reports.index');
+
+        Route::view('reports/ProductReport', 'reports.ProductReport')->name('reports.ProductReport');
+        Route::get('/GenerateProductReport', [ReportController::class, 'GenerateProductReport'])->name('generate.product.report');
+
+        Route::view('reports/SalesReport', 'reports.SalesReport')->name('reports.SalesReport');
+        #Route::view('/GenerateSalesReport', 'reports.GenerateSalesReport')->name('reports.GenerateSalesReport');
+        #Route::view('reports/ShowSalesReport', 'reports.ShowSalesReport')->name('reports.ShowSalesReport');
+
+        Route::view('reports/StaffReport', 'reports.StaffReport')->name('reports.StaffReport');
+        #Route::view('reports/GenerateStaffReport', 'reports.GenerateStaffReport')->name('reports.GenerateStaffReport');
+        #Route::view('reports/ShowStaffReport', 'reports.ShowStaffReport')->name('reports.ShowStaffReport');
+    });
 
 Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])
@@ -71,4 +90,5 @@ Route::prefix('/')
         Route::resource('sales', SaleController::class);
         Route::resource('schedules', ScheduleController::class);
         Route::resource('users', UserController::class);
+        Route::resource('reports', ReportController::class);
     });
