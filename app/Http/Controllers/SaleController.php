@@ -69,7 +69,6 @@ class SaleController extends Controller
             ]
         ];
 
-        $sale = Sale::create($validated);
         $sale->products()->attach($productSales);
 
 
