@@ -38,17 +38,13 @@ Route::middleware(['auth:sanctum', 'verified'])
 Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])
     ->group(function () {
-        
-        Route::view('reports', 'reports.index')->name('reports.index');
 
-        Route::view('reports/ProductReport', 'reports.ProductReport')->name('reports.ProductReport');
-        Route::get('reports/GenerateProductReport', [ReportController::class, 'GenerateProductReport'])->name('generate.product.report');
+        //Route::get('reports/ProductReport', [ReportController::class, 'ProductReport'])->name('index.ProductReport');
+        Route::get('reports/ProductReport', [ReportController::class, 'ProductReport'])->name('reports.ProductReport');
+        Route::get('reports/SalesReport', [ReportController::class, 'SalesReport'])->name('reports.SalesReport');
+        Route::get('reports/ShowSalesReport', [ReportController::class, 'ShowSalesReport'])->name('reports.ShowSalesReport');
+        Route::get('reports/StaffReport', [ReportController::class, 'StaffReport'])->name('reports.StaffReport');
 
-        Route::view('reports/SalesReport', 'reports.SalesReport')->name('reports.SalesReport');
-        Route::view('reports/GenerateSalesReport', 'reports.GenerateSalesReport')->name('reports.GenerateSalesReport');
-    
-        Route::view('reports/StaffReport', 'reports.StaffReport')->name('reports.StaffReport');
-        Route::view('reports/GenerateStaffReport', 'reports.GenerateStaffReport')->name('reports.GenerateStaffReport');
     });
 
 Route::prefix('/')
