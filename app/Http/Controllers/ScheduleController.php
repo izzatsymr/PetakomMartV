@@ -20,10 +20,8 @@ class ScheduleController extends Controller
 
         $search = $request->get('search', '');
 
-        $schedules = Schedule::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
+        $schedules = Schedule::all();
+           
 
         return view('app.schedules.index', compact('schedules', 'search'));
     }

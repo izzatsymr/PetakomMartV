@@ -9,156 +9,81 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-partials.card>
                 <div class="mb-5 mt-4">
-                    <div class="flex flex-wrap justify-between">
-                        <div class="md:w-1/2">
-                            <form>
-                                <div class="flex items-center w-full">
-                                    <x-inputs.text
-                                        name="search"
-                                        value="{{ $search ?? '' }}"
-                                        placeholder="{{ __('crud.common.search') }}"
-                                        autocomplete="off"
-                                    ></x-inputs.text>
-
-                                    <div class="ml-1">
-                                        <button
-                                            type="submit"
-                                            class="button button-primary"
-                                        >
-                                            <i class="icon ion-md-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="md:w-1/2 text-right">
-                            @can('create', App\Models\Schedule::class)
-                            <a
-                                href="{{ route('schedules.create') }}"
-                                class="button button-primary"
-                            >
-                                <i class="mr-1 icon ion-md-add"></i>
-                                @lang('crud.common.create')
-                            </a>
-                            @endcan
-                        </div>
+                    <div class="flex justify-end">
+                        @can('create', App\Models\Schedule::class)
+                        <a href="{{ route('schedules.create') }}" class="button button-primary">
+                            <i class="mr-1 icon ion-md-add"></i>
+                            @lang('crud.common.create')
+                        </a>
+                        @endcan
                     </div>
                 </div>
 
                 <div class="block w-full overflow-auto scrolling-touch">
-                    <table class="w-full max-w-full mb-4 bg-transparent">
+                    <table class="w-full max-w-full mb-4 bg-transparent border border-black">
                         <thead class="text-gray-700">
                             <tr>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.schedules.inputs.user_id')
-                                </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.schedules.inputs.date')
-                                </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.schedules.inputs.start_time')
-                                </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('crud.schedules.inputs.end_time')
-                                </th>
-                                <th></th>
+                                <th class="px-4 py-3 text-left"></th>
+                                <th class="px-4 py-3 text-center">Monday</th>
+                                <th class="px-4 py-3 text-center">Tuesday</th>
+                                <th class="px-4 py-3 text-center">Wednesday</th>
+                                <th class="px-4 py-3 text-center">Thursday</th>
+                                <th class="px-4 py-3 text-center">Friday</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600">
-                            @forelse($schedules as $schedule)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 text-left">
-                                    {{ optional($schedule->user)->name ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $schedule->date ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $schedule->start_time ?? '-' }}
-                                </td>
-                                <td class="px-4 py-3 text-left">
-                                    {{ $schedule->end_time ?? '-' }}
-                                </td>
-                                <td
-                                    class="px-4 py-3 text-center"
-                                    style="width: 134px;"
-                                >
-                                    <div
-                                        role="group"
-                                        aria-label="Row Actions"
-                                        class="
-                                            relative
-                                            inline-flex
-                                            align-middle
-                                        "
-                                    >
-                                        @can('update', $schedule)
-                                        <a
-                                            href="{{ route('schedules.edit', $schedule) }}"
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-                                            >
-                                                <i
-                                                    class="icon ion-md-create"
-                                                ></i>
-                                            </button>
-                                        </a>
-                                        @endcan @can('view', $schedule)
-                                        <a
-                                            href="{{ route('schedules.show', $schedule) }}"
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-                                            >
-                                                <i class="icon ion-md-eye"></i>
-                                            </button>
-                                        </a>
-                                        @endcan @can('delete', $schedule)
-                                        <form
-                                            action="{{ route('schedules.destroy', $schedule) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('{{ __('crud.common.are_you_sure') }}')"
-                                        >
-                                            @csrf @method('DELETE')
-                                            <button
-                                                type="submit"
-                                                class="button"
-                                            >
-                                                <i
-                                                    class="
-                                                        icon
-                                                        ion-md-trash
-                                                        text-red-600
-                                                    "
-                                                ></i>
-                                            </button>
-                                        </form>
-                                        @endcan
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5">
-                                    @lang('crud.common.no_items_found')
-                                </td>
-                            </tr>
-                            @endforelse
+                            @for ($i = 8; $i < 18; $i++)
+                                <tr>
+                                    <td class="px-4 py-3 text-center border border-black">
+                                        {{ \Carbon\Carbon::createFromTime($i, 0, 0, 'Asia/Kuala_Lumpur')->format('H:i:s') }}
+                                        -
+                                        {{ \Carbon\Carbon::createFromTime($i+1, 0, 0, 'Asia/Kuala_Lumpur')->format('H:i:s') }}
+                                    </td>
+                                    @for ($j = 0; $j < 5; $j++)
+                                        <td class="px-4 py-3 text-center border border-black">
+                                            @php
+                                                $mergedSchedules = [];
+                                            @endphp
+                                            
+                                            @foreach($schedules as $schedule)
+                                            @if (\Illuminate\Support\Carbon::parse($schedule->date)->format('N') == ($j + 1) && \Illuminate\Support\Carbon::parse($schedule->start_time)->format('H') <= $i && \Illuminate\Support\Carbon::parse($schedule->end_time)->format('H') > $i)
+                                                    @php
+                                                        $mergedSchedules[] = $schedule;
+                                                    @endphp
+                                                @endif
+                                            @endforeach
+                                            @if (count($mergedSchedules) > 0)
+                                                <div class="mb-2">
+                                                    <div class="text-center">
+                                                        @foreach($mergedSchedules as $mergedSchedule)
+                                                            {{ optional($mergedSchedule->user)->name ?? '-' }}
+                                                            <div class="flex justify-center mt-2">
+                                                                @can('update', $mergedSchedule)
+                                                                    <a href="{{ route('schedules.edit', $mergedSchedule) }}" class="button button-primary mr-2">
+                                                                        Edit
+                                                                    </a>
+                                                                @endcan
+                                                                @can('delete', $mergedSchedule)
+                                                                    <form class="inline" action="{{ route('schedules.destroy', $mergedSchedule) }}" method="POST" onsubmit="return confirm('{{ __('crud.common.are_you_sure') }}')">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="button button-primary">
+                                                                            Delete
+                                                                        </button>
+                                                                    </form>
+                                                                @endcan
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                    @endfor
+                                </tr>
+                            @endfor
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="5">
-                                    <div class="mt-10 px-4">
-                                        {!! $schedules->render() !!}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </x-partials.card>
