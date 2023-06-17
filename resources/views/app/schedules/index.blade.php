@@ -35,9 +35,9 @@
                             @for ($i = 8; $i < 18; $i++)
                                 <tr>
                                     <td class="px-4 py-3 text-center border border-black">
-                                        {{ \Carbon\Carbon::createFromTime($i, 0, 0)->format('H:i:s') }}
+                                        {{ \Carbon\Carbon::createFromTime($i, 0, 0, 'Asia/Kuala_Lumpur')->format('H:i:s') }}
                                         -
-                                        {{ \Carbon\Carbon::createFromTime($i+1, 0, 0)->format('H:i:s') }}
+                                        {{ \Carbon\Carbon::createFromTime($i+1, 0, 0, 'Asia/Kuala_Lumpur')->format('H:i:s') }}
                                     </td>
                                     @for ($j = 0; $j < 5; $j++)
                                         <td class="px-4 py-3 text-center border border-black">
