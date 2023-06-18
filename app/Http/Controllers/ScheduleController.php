@@ -18,14 +18,10 @@ class ScheduleController extends Controller
     {
         $this->authorize('view-any', Schedule::class);
 
-        $search = $request->get('search', '');
+        $schedules = Schedule::all();
+           
 
-        $schedules = Schedule::search($search)
-            ->latest()
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('app.schedules.index', compact('schedules', 'search'));
+        return view('app.schedules.index', compact('schedules'));
     }
 
     /**

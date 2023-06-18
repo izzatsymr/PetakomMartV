@@ -19,7 +19,7 @@
                     action="{{ route('schedules.store') }}"
                     class="mt-4"
                 >
-                    @include('app.schedules.form-inputs')
+                @include('app.schedules.form-inputs')
 
                     <div class="mt-10">
                         <a href="{{ route('schedules.index') }}" class="button">
