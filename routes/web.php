@@ -38,19 +38,15 @@ Route::middleware(['auth:sanctum', 'verified'])
 Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])
     ->group(function () {
-        
-        Route::view('reports', 'reports.index')->name('reports.index');
 
-        Route::view('reports/ProductReport', 'reports.ProductReport')->name('reports.ProductReport');
-        Route::get('/GenerateProductReport', [ReportController::class, 'GenerateProductReport'])->name('generate.product.report');
+        // routes/web.php
 
-        Route::view('reports/SalesReport', 'reports.SalesReport')->name('reports.SalesReport');
-        #Route::view('/GenerateSalesReport', 'reports.GenerateSalesReport')->name('reports.GenerateSalesReport');
-        #Route::view('reports/ShowSalesReport', 'reports.ShowSalesReport')->name('reports.ShowSalesReport');
-
-        Route::view('reports/StaffReport', 'reports.StaffReport')->name('reports.StaffReport');
-        #Route::view('reports/GenerateStaffReport', 'reports.GenerateStaffReport')->name('reports.GenerateStaffReport');
-        #Route::view('reports/ShowStaffReport', 'reports.ShowStaffReport')->name('reports.ShowStaffReport');
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/ProductReport', [ReportController::class, 'ProductReport'])->name('reports.ProductReport');
+        Route::get('reports/ShowProductReport', [ReportController::class, 'ShowProductReport'])->name('reports.ShowProductReport');
+        Route::get('reports/SalesReport', [ReportController::class, 'SalesReport'])->name('reports.SalesReport');
+        Route::get('reports/ShowSalesReport', [ReportController::class, 'getSecondTableData'])->name('reports.ShowSalesReport');
+        Route::get('reports/StaffReport', [ReportController::class, 'StaffReport'])->name('reports.StaffReport');
     });
 
 Route::prefix('/')
