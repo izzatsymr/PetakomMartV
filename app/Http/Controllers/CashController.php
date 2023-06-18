@@ -81,6 +81,16 @@ class CashController extends Controller
 
         $users = User::pluck('name', 'id');
 
+        // Retrieve the old values for the input fields
+        $oldValues = $request->old();
+
+        // If old values exist, override the corresponding properties of $cash
+        if ($oldValues) {
+            $cash->user_id = $oldValues['user_id'] ?? $cash->user_id;
+            $cash->opening_cash = $oldValues['opening_cash'] ?? $cash->opening_cash;
+            $cash->closing_cash = $oldValues['closing_cash'] ?? $cash->closing_cash;
+        }
+
         return view('app.all_cash.edit', compact('cash', 'users'));
     }
 
