@@ -10,81 +10,61 @@
             <x-partials.card>
                 <div class="mb-5 mt-4">
                     <div class="flex flex-wrap justify-between">
-                        <div class="md:w-1/2">
+
+                        <div class="md:w-1/2 text-right">
                             <form>
                                 <div class="flex items-center w-full">
-                                    <x-inputs.text name="search" value="{{ $search ?? '' }}"
-                                        placeholder="{{ __('Search by user id') }}" autocomplete="off">
-                                    </x-inputs.text>
+                                    <x-inputs.date name="start_date" value="{{ $start_date ?? '' }}"
+                                        placeholder="{{ __('Start Date') }}" autocomplete="off">
+                                    </x-inputs.date>
+
+                                    <div class="ml-2 mr-2">-</div>
+
+                                    <x-inputs.date name="end_date" value="{{ $end_date ?? '' }}"
+                                        placeholder="{{ __('End Date') }}" autocomplete="off">
+                                    </x-inputs.date>
 
                                     <div class="ml-1">
                                         <button type="submit" class="button button-primary">
-                                            <i class="icon ion-md-search"></i>
+                                            <i class="icon ion-md-filter"></i>
+                                            {{ __('Filter') }}
                                         </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="md:w-1/2 text-right">
-
-                        </div>
                     </div>
                 </div>
 
-                <div class="block w-full overflow-auto scrolling-touch">
-                    <table class="w-full max-w-full mb-4 bg-transparent">
-                        <thead class="text-gray-700">
-                            <tr>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('Sales Date')
-                                </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('User ID')
-                                </th>
-                                <th class="px-4 py-3 text-right">
-                                    @lang('Total Sales')
-                                </th>
-                                </th>
-                                <th></th>
+                <table class="w-full max-w-full mb-4 bg-transparent">
+                    <thead class="text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Sale Date</th>
+                            <th class="px-4 py-3 text-left">Total Sales</th>
+                            <th class="px-4 py-3 text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600">
+                        @foreach ($sales as $sale)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-left">{{ $sale->sale_date }}</td>
+                                <td class="px-4 py-3 text-left">{{ $sale->total_sales }}</td>
+                                <td class="px-4 py-3 text-left">
+                                    @can('view')
+                                        <a href="{{ route('reports.ShowSalesReport', ['date' => $sale->sale_date]) }}">
+                                            <button type="button" class="button">
+                                                <i class="icon ion-md-eye"></i>
+                                            </button>
+                                        </a>
+                                    @endcan
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="text-gray-600">
-                            @foreach ($datas as $data)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-4 py-3 text-left">
-                                        {{ $data->created_at ?? '-' }}
-                                    </td>
-                                    <td class="px-4 py-3 text-left">
-                                        {{ $data->user_id ?? '-' }}
-                                    </td>
-                                    <td class="px-4 py-3 text-right">
-                                        {{ $data->total_sales ?? '-' }}
-                                    </td>
-                                  
-                                    <td class="px-4 py-3 text-center" style="width: 134px;">
-                                        <div role="group" aria-label="Row Actions"
-                                            class="relative inline-flex align-middle">
-                                            <a href="{{ route('reports.ShowSalesReport', $data->user_id) }}" class="mr-1">
-                                                <button type="button" class="button">
-                                                    <i class="icon ion-md-eye"></i>
-                                                </button>
-                                            </a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            @if ($datas->isEmpty())
-                                <tr>
-                                    <td colspan="9">
-                                        @lang('No items found.')
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </x-partials.card>
+            <!-- Pass $secondTableData and $selectedDate to ShowSalesReport.blade.php -->
+            
         </div>
     </div>
 </x-app-layout>

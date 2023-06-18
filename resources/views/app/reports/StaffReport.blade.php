@@ -14,7 +14,7 @@
                             <form>
                                 <div class="flex items-center w-full">
                                     <x-inputs.text name="search" value="{{ $search ?? '' }}"
-                                        placeholder="{{ __('search by staff name') }}" autocomplete="off"></x-inputs.text>
+                                        placeholder="{{ __('Search by staff name') }}" autocomplete="off"></x-inputs.text>
 
                                     <div class="ml-1">
                                         <button type="submit" class="button button-primary">
@@ -38,91 +38,49 @@
                                     @lang('Schedule date')
                                 </th>
                                 <th class="px-4 py-3 text-left">
-                                    @lang('Total Staff')
+                                    @lang('Start Time')
                                 </th>
                                 <th class="px-4 py-3 text-left">
-                                    @lang('Name')
+                                    @lang('End Time')
                                 </th>
-                                <th class="px-4 py-3 text-right">
-                                    @lang('Price')
+                                <th class="px-4 py-3 text-left">
+                                    @lang('User ID')
                                 </th>
-                                <th class="px-4 py-3 text-right">
-                                    @lang('Stock Quantity')
+                                <th class="px-4 py-3 text-left">
+                                    @lang('User Name')
                                 </th>
-                                <th class="px-4 py-3 text-right">
-                                    @lang('Created_at')
-                                </th>
-                                <th class="px-4 py-3 text-right">
-                                    @lang('Updated_at')
-                                </th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600">
                             @forelse($datas as $data)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-3 text-left">
-                                        {{ $data->id ?? '-' }}
+                                        {{ $data->created_at ?? '-' }}
                                     </td>
                                     <td class="px-4 py-3 text-left">
-                                        {{ optional($data->category_id)->name ?? '-' }}
+                                        {{ $data->start_time ?? '-' }}
+                                    </td>
+                                    <td class="px-4 py-3 text-left">
+                                        {{ $data->end_time ?? '-' }}
+                                    </td>
+                                    <td class="px-4 py-3 text-left">
+                                        {{ $data->id ?? '-' }}
                                     </td>
                                     <td class="px-4 py-3 text-left">
                                         {{ $data->name ?? '-' }}
                                     </td>
-                                    <td class="px-4 py-3 text-right">
-                                        {{ $data->price ?? '-' }}
-                                    </td>
-                                    <td class="px-4 py-3 text-right">
-                                        {{ $data->stock_quantity ?? '-' }}
-                                    </td>
-                                    <td class="px-4 py-3 text-right">
-                                        {{ $data->created_at ?? '-' }}
-                                    </td>
-                                    <td class="px-4 py-3 text-right">
-                                        {{ $data->updated_at ?? '-' }}
-                                    </td>
-                                    <td
-                                    class="px-4 py-3 text-center"
-                                    style="width: 134px;"
-                                >
-                                    <div
-                                        role="group"
-                                        aria-label="Row Actions"
-                                        class="
-                                            relative
-                                            inline-flex
-                                            align-middle
-                                        "
-                                    >
-                                        @can('view', $data)
-                                        <a
-                                            
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-
-
-                                            >   
-                                                <i class="icon ion-md-eye"></i>
-                                            </button>
-                                        </a>
-                                        @endcan 
-                                    </div>
-                                </td>
-                            </tr>
+                                </tr>
                             @empty
                             <tr>
-                                <td colspan="3">
+                                <td colspan="5">
                                     @lang('crud.common.no_items_found')
                                 </td>
                             </tr>
                             @endforelse
+                        </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="6">
+                                <td colspan="5">
                                 </td>
                             </tr>
                         </tfoot>

@@ -14,18 +14,41 @@
                             <form>
                                 <div class="flex items-center w-full">
                                     <x-inputs.text name="search" value="{{ $search ?? '' }}"
-                                        placeholder="{{ __('search by product id @ name') }}" autocomplete="off"></x-inputs.text>
+                                        placeholder="{{ __('Search by product name') }}" autocomplete="off"></x-inputs.text>
 
-                                    <div class="ml-1">
-                                        <button type="submit" class="button button-primary">
-                                            <i class="icon ion-md-search"></i>
-                                        </button>
+                                        <div class="ml-1">
+                                            <button type="submit" class="button button-primary">
+                                                <i class="icon ion-md-search"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+                            <div class="md:w-1/2 text-right">
+                                <form>
+                                    <div class="flex items-center w-full">
+                                        <x-inputs.date name="start_date" value="{{ $start_date ?? '' }}"
+                                            placeholder="{{ __('Start Date') }}" autocomplete="off">
+                                        </x-inputs.date>
+    
+                                        <div class="ml-2 mr-2">-</div>
+    
+                                        <x-inputs.date name="end_date" value="{{ $end_date ?? '' }}"
+                                            placeholder="{{ __('End Date') }}" autocomplete="off">
+                                        </x-inputs.date>
+    
+    
+                                        <div class="ml-1">
+                                            <button type="submit" class="button button-primary">
+                                                <i class="icon ion-md-filter"></i>
+                                                {{ __('Filter') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                         </div>
                         <div class="md:w-1/2 text-right">
-                            
+                            <!-- Add any additional filters here -->
                         </div>
                     </div>
                 </div>
@@ -35,10 +58,7 @@
                         <thead class="text-gray-700">
                             <tr>
                                 <th class="px-4 py-3 text-left">
-                                    @lang('Id')
-                                </th>
-                                <th class="px-4 py-3 text-left">
-                                    @lang('Category Id')
+                                    @lang('ID')
                                 </th>
                                 <th class="px-4 py-3 text-left">
                                     @lang('Name')
@@ -50,10 +70,10 @@
                                     @lang('Stock Quantity')
                                 </th>
                                 <th class="px-4 py-3 text-right">
-                                    @lang('Created_at')
+                                    @lang('Created At')
                                 </th>
                                 <th class="px-4 py-3 text-right">
-                                    @lang('Updated_at')
+                                    @lang('Updated At')
                                 </th>
                                 <th></th>
                             </tr>
@@ -64,9 +84,7 @@
                                     <td class="px-4 py-3 text-left">
                                         {{ $data->id ?? '-' }}
                                     </td>
-                                    <td class="px-4 py-3 text-left">
-                                        {{ optional($data->category_id)->name ?? '-' }}
-                                    </td>
+
                                     <td class="px-4 py-3 text-left">
                                         {{ $data->name ?? '-' }}
                                     </td>
@@ -77,53 +95,24 @@
                                         {{ $data->stock_quantity ?? '-' }}
                                     </td>
                                     <td class="px-4 py-3 text-right">
-                                        {{ $data->created_at ?? '-' }}
+                                        {{ $data->created_date ?? '-' }}
                                     </td>
                                     <td class="px-4 py-3 text-right">
-                                        {{ $data->updated_at ?? '-' }}
+                                        {{ $data->updated_date ?? '-' }}
                                     </td>
-                                    <td
-                                    class="px-4 py-3 text-center"
-                                    style="width: 134px;"
-                                >
-                                    <div
-                                        role="group"
-                                        aria-label="Row Actions"
-                                        class="
-                                            relative
-                                            inline-flex
-                                            align-middle
-                                        "
-                                    >
-                                        @can('view', $data)
-                                        <a
-                                            
-                                            class="mr-1"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="button"
-
-
-                                            >   
-                                                <i class="icon ion-md-eye"></i>
-                                            </button>
-                                        </a>
-                                        @endcan 
-                                    </div>
-                                </td>
-                            </tr>
+                                    
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="3">
-                                    @lang('crud.common.no_items_found')
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="8">
+                                        @lang('crud.common.no_items_found')
+                                    </td>
+                                </tr>
                             @endforelse
+                        </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="6">
-                                </td>
+                                <td colspan="6"></td>
                             </tr>
                         </tfoot>
                     </table>

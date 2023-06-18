@@ -39,12 +39,14 @@ Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])
     ->group(function () {
 
-        //Route::get('reports/ProductReport', [ReportController::class, 'ProductReport'])->name('index.ProductReport');
-        Route::get('reports/ProductReport', [ReportController::class, 'ProductReport'])->name('reports.ProductReport');
-        Route::get('reports/SalesReport', [ReportController::class, 'SalesReport'])->name('reports.SalesReport');
-        Route::get('reports/ShowSalesReport', [ReportController::class, 'ShowSalesReport'])->name('reports.ShowSalesReport');
-        Route::get('reports/StaffReport', [ReportController::class, 'StaffReport'])->name('reports.StaffReport');
+        // routes/web.php
 
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/ProductReport', [ReportController::class, 'ProductReport'])->name('reports.ProductReport');
+        Route::get('reports/ShowProductReport', [ReportController::class, 'ShowProductReport'])->name('reports.ShowProductReport');
+        Route::get('reports/SalesReport', [ReportController::class, 'SalesReport'])->name('reports.SalesReport');
+        Route::get('reports/ShowSalesReport', [ReportController::class, 'getSecondTableData'])->name('reports.ShowSalesReport');
+        Route::get('reports/StaffReport', [ReportController::class, 'StaffReport'])->name('reports.StaffReport');
     });
 
 Route::prefix('/')
