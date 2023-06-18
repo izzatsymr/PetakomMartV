@@ -9,9 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-partials.card>
                 <x-slot name="title">
-                    <a href="{{ route('sales.index') }}" class="mr-4"
-                        ><i class="mr-1 icon ion-md-arrow-back"></i
-                    ></a>
+                    <a href="{{ route('sales.index') }}" class="mr-4">
+                        <i class="mr-1 icon ion-md-arrow-back"></i>
+                    </a>
                 </x-slot>
 
                 <div class="mt-4 px-4">
@@ -25,11 +25,33 @@
                         <h5 class="font-medium text-gray-700">
                             @lang('crud.sales.inputs.payment_method_id')
                         </h5>
-                        <span
-                            >{{ optional($sale->paymentMethod)->name ?? '-'
-                            }}</span
-                        >
+                        <span>{{ optional($sale->paymentMethod)->name ?? '-' }}</span>
                     </div>
+
+                    <div class="mb-4">
+                        <h5 class="font-medium text-gray-700">
+                            Product Details
+                        </h5>
+                        <table class="w-full max-w-full mb-4 bg-transparent border border-black">
+                            <thead class="text-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-left border border-black">Product Name</th>
+                                    <th class="px-4 py-3 text-left border border-black">Quantity</th>
+                                    <th class="px-4 py-3 text-left border border-black">Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($sale->products as $product)
+                                <tr>
+                                    <td class="px-4 py-3 text-left border border-black">{{ $product->name }}</td>
+                                    <td class="px-4 py-3 text-left border border-black">{{ $product->pivot->quantity }}</td>
+                                    <td class="px-4 py-3 text-left border border-black">{{ $product->pivot->total_price }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="mb-4">
                         <h5 class="font-medium text-gray-700">
                             @lang('crud.sales.inputs.subtotal_sales')

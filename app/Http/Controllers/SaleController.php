@@ -94,6 +94,8 @@ class SaleController extends Controller
     {
         $this->authorize('view', $sale);
 
+        $sale->load('products'); // Eager load the products relationship
+
         return view('app.sales.show', compact('sale'));
     }
 
@@ -120,7 +122,7 @@ class SaleController extends Controller
 
         $sale->status = $request->input('status');
         $sale->refunded_reason = $request->input('refunded_reason');
-        
+
         $sale->update();
 
         return redirect()
