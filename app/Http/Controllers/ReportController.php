@@ -16,9 +16,36 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $datas = Product::with('inventories')->get();
+        // Graph 1: Sales by User ID (Weekly)
+    $salesByUser = Sale::select(
+        DB::raw('YEARWEEK(created_at) as week'),
+        'user_id',
+        DB::raw('SUM(total_sales) as total_sales')
+    )
+        ->groupBy('week', 'user_id')
+        ->orderBy('week')
+        ->get();
 
-        return view('app.reports.index', compact('datas'));
+    // Graph 2: Product Quantity (Weekly)
+    $productQuantities = Inventory::select(
+        DB::raw('YEARWEEK(created_at) as week'),
+        DB::raw('SUM(stock_quantity) as total_quantity')
+        
+    )
+        ->groupBy('week')
+        ->orderBy('week')
+        ->get();
+
+    // Graph 3: Daily Sales
+    $dailySales = Sale::select(
+        DB::raw('DATE(created_at) as sale_date'),
+        DB::raw('SUM(total_sales) as total_sales')
+    )
+        ->groupBy('sale_date')
+        ->orderBy('sale_date')
+        ->get();
+
+        return view('app.reports.index', compact('salesByUser', 'productQuantities', 'dailySales'));
     }
 
     public function ProductReport(Request $request)
