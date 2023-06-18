@@ -1,3 +1,5 @@
+<div class="overlay-container">
+    <div class="overlay-content">
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -9,28 +11,34 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-partials.card>
                 <x-slot name="title">
-                    <a href="{{ route('sales.index') }}" class="mr-4"
-                        ><i class="mr-1 icon ion-md-arrow-back"></i
-                    ></a>
+                    <a href="{{ route('sales.index') }}" class="mr-4"><i class="mr-1 icon ion-md-arrow-back"></i></a>
                 </x-slot>
 
-                <x-form
-                    method="PUT"
-                    action="{{ route('sales.update', $sale) }}"
-                    class="mt-4"
-                >
-                    @include('app.sales.form-inputs')
+                <x-form method="POST" action="{{ route('sales.update', $sale) }}" class="mt-4">
+                    @method('PUT')
+                    @csrf
+                    <div class="flex flex-wrap">
+                        <x-inputs.group class="w-full">
+                            <label for="status" class="block font-medium text-gray-700">Status</label>
+                            <select id="status" name="status" class="form-input w-full">
+                                <option value="completed" {{ $sale->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                <option value="refunded" {{ $sale->status == 'refunded' ? 'selected' : '' }}>Refunded</option>
+                            </select>
+                        </x-inputs.group>
+
+                        <x-inputs.group class="w-full">
+                            <x-inputs.textarea name="refunded_reason" label="Refunded Reason" maxlength="255">{{ $sale->refunded_reason }}</x-inputs.textarea>
+                        </x-inputs.group>
+                    </div>
 
                     <div class="mt-10">
                         <a href="{{ route('sales.index') }}" class="button">
-                            <i
-                                class="
+                            <i class="
                                     mr-1
                                     icon
                                     ion-md-return-left
                                     text-primary
-                                "
-                            ></i>
+                                "></i>
                             @lang('crud.common.back')
                         </a>
 
@@ -39,10 +47,7 @@
                             @lang('crud.common.create')
                         </a>
 
-                        <button
-                            type="submit"
-                            class="button button-primary float-right"
-                        >
+                        <button type="submit" class="button button-primary float-right">
                             <i class="mr-1 icon ion-md-save"></i>
                             @lang('crud.common.update')
                         </button>

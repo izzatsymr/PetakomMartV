@@ -22,6 +22,7 @@ class SaleController extends Controller
 
         $search = $request->get('search', '');
 
+        // Fetch sales using the Sale model
         $sales = Sale::search($search)
             ->latest()
             ->paginate(5)
@@ -34,17 +35,25 @@ class SaleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
     public function create(Request $request)
     {
         $this->authorize('create', Sale::class);
 
+        // Fetch users, payment methods, and products using their respective models
         $users = User::pluck('name', 'id');
         $paymentMethods = PaymentMethod::pluck('name', 'id');
-        $products = Product::pluck('name', 'id');
+
+        $products = Product::all()->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+            ];
+        });
 
         return view('app.sales.create', compact('users', 'paymentMethods', 'products'));
     }
-
 
     /**
      * @param \App\Http\Requests\SaleStoreRequest $request
@@ -71,12 +80,10 @@ class SaleController extends Controller
 
         $sale->products()->attach($productSales);
 
-
         return redirect()
-            ->route('sales.edit', $sale)
+            ->route('sales.show', $sale)
             ->withSuccess(__('crud.common.created'));
     }
-
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -94,48 +101,27 @@ class SaleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Sale $sale
      * @return \Illuminate\Http\Response
-     * 
      */
-    public function edit(Request $request, Sale $sale)
+    public function edit(Sale $sale)
     {
         $this->authorize('update', $sale);
-
-        $users = User::pluck('name', 'id');
-        $paymentMethods = PaymentMethod::pluck('name', 'id');
-        $products = Product::pluck('name', 'id');
-
-        return view(
-            'app.sales.edit',
-            compact('sale', 'users', 'paymentMethods', 'products')
-        );
+        return view('app.sales.edit')
+            ->with('sale', $sale);
     }
 
     /**
-     * @param \App\Http\Requests\SaleUpdateRequest $request
+     * @param \Illuminate\Http\Request $request
      * @param \App\Models\Sale $sale
      * @return \Illuminate\Http\Response
      */
-    public function update(SaleUpdateRequest $request, Sale $sale)
+    public function update(Request $request, Sale $sale)
     {
         $this->authorize('update', $sale);
 
-        $validated = $request->validated();
-
-        $productId = $request->input('product_id');
-        $quantity = $request->input('quantity');
-        $totalPrice = $request->input('total_price');
-
-        $productSales = [
-            $productId => [
-                'quantity' => $quantity,
-                'total_price' => $totalPrice,
-            ]
-        ];
-
-        $sale = Sale::create($validated);
-        $sale->products()->attach($productSales);
-
-        $sale->update($validated);
+        $sale->status = $request->input('status');
+        $sale->refunded_reason = $request->input('refunded_reason');
+        
+        $sale->update();
 
         return redirect()
             ->route('sales.edit', $sale)
