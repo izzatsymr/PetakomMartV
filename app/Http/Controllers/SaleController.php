@@ -28,7 +28,7 @@ class SaleController extends Controller
             ->paginate(5)
             ->withQueryString();
 
-        return view('app.sales.index', compact('sales', 'search'));
+        return view('app.sales.indexSales', compact('sales', 'search'));
     }
 
     /**
@@ -52,7 +52,7 @@ class SaleController extends Controller
             ];
         });
 
-        return view('app.sales.create', compact('users', 'paymentMethods', 'products'));
+        return view('app.sales.createSales', compact('users', 'paymentMethods', 'products'));
     }
 
     /**
@@ -96,7 +96,7 @@ class SaleController extends Controller
 
         $sale->load('products'); // Eager load the products relationship
 
-        return view('app.sales.show', compact('sale'));
+        return view('app.sales.showSales', compact('sale'));
     }
 
     /**
@@ -107,7 +107,7 @@ class SaleController extends Controller
     public function edit(Sale $sale)
     {
         $this->authorize('update', $sale);
-        return view('app.sales.edit')
+        return view('app.sales.editSales')
             ->with('sale', $sale);
     }
 
@@ -126,7 +126,7 @@ class SaleController extends Controller
         $sale->update();
 
         return redirect()
-            ->route('sales.edit', $sale)
+            ->route('sales.editSales', $sale)
             ->withSuccess(__('crud.common.saved'));
     }
 
@@ -142,7 +142,7 @@ class SaleController extends Controller
         $sale->delete();
 
         return redirect()
-            ->route('sales.index')
+            ->route('sales.indexSales')
             ->withSuccess(__('crud.common.removed'));
     }
 }

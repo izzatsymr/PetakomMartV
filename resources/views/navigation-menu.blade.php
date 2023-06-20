@@ -21,11 +21,6 @@
                         <x-dropdown-link href="{{ route('reports.index') }}">
                         Reports
                         </x-dropdown-link>
-                        @can('view-any', App\Models\Cash::class)
-                        <x-dropdown-link href="{{ route('all-cash.index') }}">
-                        All Cash
-                        </x-dropdown-link>
-                        @endcan
                         @can('view-any', App\Models\Inventory::class)
                         <x-dropdown-link href="{{ route('inventories.index') }}">
                         Inventories
@@ -34,11 +29,6 @@
                         @can('view-any', App\Models\Category::class)
                         <x-dropdown-link href="{{ route('categories.index') }}">
                         Categories
-                        </x-dropdown-link>
-                        @endcan
-                        @can('view-any', App\Models\PaymentMethod::class)
-                        <x-dropdown-link href="{{ route('payment-methods.index') }}">
-                        Payment Methods
                         </x-dropdown-link>
                         @endcan
                         @can('view-any', App\Models\Product::class)
