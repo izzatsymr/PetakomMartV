@@ -13,9 +13,8 @@
                         <div class="md:w-1/2">
                             <form>
                                 <div class="flex items-center w-full">
-                                    <x-inputs.text name="search" value="{{ $search ?? '' }}"
-                                        placeholder="{{ __('Search by staff name') }}" autocomplete="off"></x-inputs.text>
-
+                                    <x-inputs.text name="user_id" value="{{ $user_id ?? '' }}"
+                                        placeholder="{{ __('Search by User ID') }}" autocomplete="off"></x-inputs.text>
                                     <div class="ml-1">
                                         <button type="submit" class="button button-primary">
                                             <i class="icon ion-md-search"></i>
@@ -23,16 +22,15 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                        <div class="md:w-1/2 text-right">
                             
                         </div>
+
                     </div>
                 </div>
 
                 <div class="block w-full overflow-auto scrolling-touch">
-                    <table class="w-full max-w-full mb-4 bg-transparent">
-                        <thead class="text-gray-700">
+                    <table class="w-full max-w-full mb-4 bg-white rounded shadow-md">
+                        <thead class="text-gray-700 bg-gray-200">
                             <tr>
                                 <th class="px-4 py-3 text-left">
                                     @lang('Schedule date')
@@ -53,7 +51,7 @@
                         </thead>
                         <tbody class="text-gray-600">
                             @forelse($datas as $data)
-                                <tr class="hover:bg-gray-50">
+                                <tr class="hover:bg-gray-100">
                                     <td class="px-4 py-3 text-left">
                                         {{ $data->created_at ?? '-' }}
                                     </td>
@@ -71,19 +69,13 @@
                                     </td>
                                 </tr>
                             @empty
-                            <tr>
-                                <td colspan="5">
-                                    @lang('crud.common.no_items_found')
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="5" class="px-4 py-2 text-center">
+                                        @lang('crud.common.no_items_found')
+                                    </td>
+                                </tr>
                             @endforelse
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="5">
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </x-partials.card>
