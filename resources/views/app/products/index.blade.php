@@ -131,7 +131,7 @@
                                         <form
                                             action="{{ route('products.destroy', $product) }}"
                                             method="POST"
-                                            onsubmit="return confirm('{{ __('crud.common.are_you_sure') }}')"
+                                            onsubmit="return confirm('{{ __(',crud.common.are_you_sure,)"
                                         >
                                             @csrf @method('DELETE')
                                             <button

@@ -14,15 +14,18 @@
                     ></a>
                 </x-slot>
 
+                <!-- Form to edit an existing product -->
                 <x-form
                     method="PUT"
                     action="{{ route('products.update', $product) }}"
                     has-files
                     class="mt-4"
                 >
+                    <!-- Include form inputs for the product -->
                     @include('app.products.form-inputs')
 
                     <div class="mt-10">
+                        <!-- Button to go back to the products index page -->
                         <a href="{{ route('products.index') }}" class="button">
                             <i
                                 class="
@@ -35,11 +38,13 @@
                             @lang('crud.common.back')
                         </a>
 
+                        <!-- Button to go to the create product page -->
                         <a href="{{ route('products.create') }}" class="button">
                             <i class="mr-1 icon ion-md-add text-primary"></i>
                             @lang('crud.common.create')
                         </a>
 
+                        <!-- Button to submit the form and update the product -->
                         <button
                             type="submit"
                             class="button button-primary float-right"
