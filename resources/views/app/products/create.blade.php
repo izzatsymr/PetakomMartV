@@ -14,15 +14,18 @@
                     ></a>
                 </x-slot>
 
+                <!-- Form to create a new product -->
                 <x-form
                     method="POST"
                     action="{{ route('products.store') }}"
                     has-files
                     class="mt-4"
                 >
+                    <!-- Include form inputs for the product -->
                     @include('app.products.form-inputs')
 
                     <div class="mt-10">
+                        <!-- Button to go back to the products index page -->
                         <a href="{{ route('products.index') }}" class="button">
                             <i
                                 class="
@@ -35,6 +38,7 @@
                             @lang('crud.common.back')
                         </a>
 
+                        <!-- Button to submit the form and create the product -->
                         <button
                             type="submit"
                             class="button button-primary float-right"

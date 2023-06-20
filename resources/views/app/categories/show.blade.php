@@ -20,6 +20,7 @@
                             @lang('crud.categories.inputs.name')
                         </h5>
                         <span>{{ $category->name ?? '-' }}</span>
+                        <!-- Displaying the category name -->
                     </div>
                 </div>
 
@@ -27,12 +28,14 @@
                     <a href="{{ route('categories.index') }}" class="button">
                         <i class="mr-1 icon ion-md-return-left"></i>
                         @lang('crud.common.back')
+                        <!-- "Back" button to navigate back to the categories index page -->
                     </a>
 
                     @can('create', App\Models\Category::class)
                     <a href="{{ route('categories.create') }}" class="button">
                         <i class="mr-1 icon ion-md-add"></i>
                         @lang('crud.common.create')
+                        <!-- "Create" button to navigate to the create category page -->
                     </a>
                     @endcan
                 </div>

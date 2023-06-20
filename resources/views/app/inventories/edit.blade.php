@@ -20,6 +20,7 @@
                     class="mt-4"
                 >
                     @include('app.inventories.form-inputs')
+                    <!-- Including the form inputs for the inventory item -->
 
                     <div class="mt-10">
                         <a
@@ -35,6 +36,7 @@
                                 "
                             ></i>
                             @lang('crud.common.back')
+                            <!-- "Back" button to navigate back to the inventories index page -->
                         </a>
 
                         <a
@@ -43,6 +45,7 @@
                         >
                             <i class="mr-1 icon ion-md-add text-primary"></i>
                             @lang('crud.common.create')
+                            <!-- "Create" button to navigate to the create inventory page -->
                         </a>
 
                         <button
@@ -51,6 +54,7 @@
                         >
                             <i class="mr-1 icon ion-md-save"></i>
                             @lang('crud.common.update')
+                            <!-- "Update" button to submit the form and update the inventory item -->
                         </button>
                     </div>
                 </x-form>

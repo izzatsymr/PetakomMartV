@@ -19,16 +19,15 @@
                         <h5 class="font-medium text-gray-700">
                             @lang('crud.inventories.inputs.product_id')
                         </h5>
-                        <span
-                            >{{ optional($inventory->product)->name ?? '-'
-                            }}</span
-                        >
+                        <span>{{ optional($inventory->product)->name ?? '-' }}</span>
+                        <!-- Displaying the product name of the inventory item (or '-' if not available) -->
                     </div>
                     <div class="mb-4">
                         <h5 class="font-medium text-gray-700">
                             @lang('crud.inventories.inputs.stock_quantity')
                         </h5>
                         <span>{{ $inventory->stock_quantity ?? '-' }}</span>
+                        <!-- Displaying the stock quantity of the inventory item (or '-' if not available) -->
                     </div>
                 </div>
 

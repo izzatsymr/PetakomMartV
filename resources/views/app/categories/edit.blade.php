@@ -8,47 +8,33 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-partials.card>
+                <!-- Displaying the "Back" button -->
                 <x-slot name="title">
-                    <a href="{{ route('categories.index') }}" class="mr-4"
-                        ><i class="mr-1 icon ion-md-arrow-back"></i
-                    ></a>
+                    <a href="{{ route('categories.index') }}" class="mr-4">
+                        <i class="mr-1 icon ion-md-arrow-back"></i>
+                    </a>
                 </x-slot>
 
-                <x-form
-                    method="PUT"
-                    action="{{ route('categories.update', $category) }}"
-                    class="mt-4"
-                >
+                <!-- Form for editing the category -->
+                <x-form method="PUT" action="{{ route('categories.update', $category) }}" class="mt-4">
+                    <!-- Including the form inputs for the category -->
                     @include('app.categories.form-inputs')
 
                     <div class="mt-10">
-                        <a
-                            href="{{ route('categories.index') }}"
-                            class="button"
-                        >
-                            <i
-                                class="
-                                    mr-1
-                                    icon
-                                    ion-md-return-left
-                                    text-primary
-                                "
-                            ></i>
+                        <!-- "Back" button -->
+                        <a href="{{ route('categories.index') }}" class="button">
+                            <i class="mr-1 icon ion-md-return-left text-primary"></i>
                             @lang('crud.common.back')
                         </a>
 
-                        <a
-                            href="{{ route('categories.create') }}"
-                            class="button"
-                        >
+                        <!-- "Create" button -->
+                        <a href="{{ route('categories.create') }}" class="button">
                             <i class="mr-1 icon ion-md-add text-primary"></i>
                             @lang('crud.common.create')
                         </a>
 
-                        <button
-                            type="submit"
-                            class="button button-primary float-right"
-                        >
+                        <!-- "Update" button -->
+                        <button type="submit" class="button button-primary float-right">
                             <i class="mr-1 icon ion-md-save"></i>
                             @lang('crud.common.update')
                         </button>
