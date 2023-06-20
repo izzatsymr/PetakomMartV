@@ -9,6 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-partials.card>
                 <div class="mb-5 mt-4">
+                    
+                    {{--for create schedules--}}
                     <div class="flex justify-end">
                         @can('create', App\Models\Schedule::class)
                         <a href="{{ route('schedules.create') }}" class="button button-primary">
@@ -19,9 +21,11 @@
                     </div>
                 </div>
 
+                {{--display schedules list--}}
                 <div class="block w-full overflow-auto scrolling-touch">
                     <table class="w-full max-w-full mb-4 bg-transparent border border-black">
                         <thead class="text-gray-700">
+                            {{--display the day on top of schedules list--}}
                             <tr>
                                 <th class="px-4 py-3 text-left"></th>
                                 <th class="px-4 py-3 text-center">Monday</th>
@@ -34,6 +38,7 @@
                         <tbody class="text-gray-600">
                             @for ($i = 8; $i < 18; $i++)
                                 <tr>
+                                    {{--display left side time for schedules list--}}
                                     <td class="px-4 py-3 text-center border border-black">
                                         {{ \Carbon\Carbon::createFromTime($i, 0, 0, 'Asia/Kuala_Lumpur')->format('H:i:s') }}
                                         -
@@ -45,6 +50,7 @@
                                                 $mergedSchedules = [];
                                             @endphp
                                             
+                                            {{--check each schedule that fall in what day,start itme and end time to add to mergedSchedule--}}
                                             @foreach($schedules as $schedule)
                                             @if (\Illuminate\Support\Carbon::parse($schedule->date)->format('N') == ($j + 1) && \Illuminate\Support\Carbon::parse($schedule->start_time)->format('H') <= $i && \Illuminate\Support\Carbon::parse($schedule->end_time)->format('H') > $i)
                                                     @php
@@ -52,6 +58,8 @@
                                                     @endphp
                                                 @endif
                                             @endforeach
+
+                                            {{--display schedule, edit and delete--}}
                                             @if (count($mergedSchedules) > 0)
                                                 <div class="mb-2">
                                                     <div class="text-center">
