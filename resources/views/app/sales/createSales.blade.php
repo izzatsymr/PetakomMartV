@@ -89,6 +89,7 @@
                             const productSelect = document.getElementById('product_id');
                             productSelect.addEventListener('change', showPrice);
 
+                            //method to fetch the item price
                             function showPrice() {
                                 const selectedOption = productSelect.options[productSelect.selectedIndex];
                                 const productPrice = parseFloat(selectedOption.getAttribute('data-price'));
@@ -96,6 +97,7 @@
                                 itemPriceInput.value = productPrice.toFixed(2);
                             }
 
+                            //method to calculate the item price
                             function calculateTotalPrice() {
                                 const itemPrice = parseFloat(itemPriceInput.value);
                                 const quantity = parseInt(quantityInput.value);
@@ -109,6 +111,7 @@
                                 }
                             }
 
+                            //mthod to calculate subtotal
                             function calculateSubtotalSales() {
                                 const totalPrices = document.querySelectorAll('input[name="total_price"]');
                                 let subtotalSales = 0;
@@ -123,6 +126,7 @@
                                 subtotalSalesInput.value = subtotalSales.toFixed(2);
                             }
 
+                            //method to calculate service tax
                             function calculateServiceTax() {
                                 const subtotalSales = parseFloat(subtotalSalesInput.value);
                                 if (!isNaN(subtotalSales)) {
@@ -131,6 +135,7 @@
                                 }
                             }
 
+                            //method to calculate total amount
                             function calculateTotalSales() {
                                 const serviceTax = parseFloat(serviceTaxInput.value);
                                 const subtotalSales = parseFloat(subtotalSalesInput.value);
