@@ -17,39 +17,28 @@ class ReportController extends Controller
     public function index()
     {
         // Graph 1: Sales by User ID (Weekly)
-    $salesByUser = Sale::select(
-        DB::raw('YEARWEEK(created_at) as week'),
-        'user_id',
-        DB::raw('SUM(total_sales) as total_sales')
-    )
-        ->groupBy('week', 'user_id')
-        ->orderBy('week')
-        ->get();
+        // Retrieve sales data grouped by week and user, ordered by week
+        $salesByUser = Sale::select(
+            DB::raw('YEARWEEK(created_at) as week'),
+            'user_id',
+            DB::raw('SUM(total_sales) as total_sales')
+        )
+            ->groupBy('week', 'user_id')
+            ->orderBy('week')
+            ->get();
 
-    // Graph 2: Product Quantity (Weekly)
-    $productQuantities = Inventory::select(
-        DB::raw('YEARWEEK(created_at) as week'),
-        DB::raw('SUM(stock_quantity) as total_quantity')
-        
-    )
-        ->groupBy('week')
-        ->orderBy('week')
-        ->get();
 
-    // Graph 3: Daily Sales
-    $dailySales = Sale::select(
-        DB::raw('DATE(created_at) as sale_date'),
-        DB::raw('SUM(total_sales) as total_sales')
-    )
-        ->groupBy('sale_date')
-        ->orderBy('sale_date')
-        ->get();
-
-        return view('app.reports.index', compact('salesByUser', 'productQuantities', 'dailySales'));
+        // Graph 2: Product by Category
+    
+        $categories = Product::select('category_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('category_id')
+            ->get();
+        return view('app.reports.index', compact('salesByUser', 'categories'));
     }
 
     public function ProductReport(Request $request)
     {
+        // Query products and inventories data for product reporting
         $query = DB::table('products')
             ->join('inventories', 'products.id', '=', 'inventories.product_id')
             ->select(
@@ -77,8 +66,8 @@ class ReportController extends Controller
         $datas = $query->get();
 
         // Retrieve stock quantity data for each product
-        // Retrieve stock quantity data for each product
         foreach ($datas as $product) {
+            // Query stock quantity data grouped by week for each product
             $stockData = DB::table('inventories')
                 ->where('product_id', $product->id)
                 ->select(
@@ -92,7 +81,6 @@ class ReportController extends Controller
             $product->stock_data = $stockData;
         }
 
-
         return view('app.reports.ProductReport', compact('datas'));
     }
 
@@ -103,16 +91,16 @@ class ReportController extends Controller
         // Apply filters based on the request parameters
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-  
+
         if (!empty($startDate) && !empty($endDate)) {
+            // Filter sales by date range
             $query->whereDate('created_at', '>=', $startDate)
                 ->whereDate('created_at', '<=', $endDate);
         }
 
-        // Retrieve sales data for the first table
+        // Retrieve sales data grouped by sale date
         $sales = $query->select(
             DB::raw("DATE_FORMAT(created_at, '%m/%d/%y') as sale_date"),
-
             DB::raw('SUM(total_sales) as total_sales')
         )
             ->groupBy('sale_date')
@@ -122,38 +110,27 @@ class ReportController extends Controller
     }
 
     public function getSecondTableData(Request $request)
-{
-    $query = Sale::query();
-    $selectedDate = $request->query('date');
+    {
+        $query = Sale::query();
+        $selectedDate = $request->query('date');
 
+        if ($request->has('sales_id')) {
+            // Filter sales by sales ID
+            $salesId = $request->input('sales_id');
+            $query->where('id', $salesId);
+        }
 
-    if ($request->has('id')) {
-        $salesId = $request->input('sales_id');
-        $query->where('id', $salesId);
+        if ($request->has('user_id')) {
+            // Filter sales by user ID
+            $userId = $request->input('user_id');
+            $query->where('user_id', $userId);
+        }
+
+        // Retrieve second table data based on the applied filters
+        $secondTableData = $query->get();
+
+        return view('app.reports.ShowSalesReport', compact('secondTableData', 'selectedDate'));
     }
-
-
-    if ($request->has('user_id')) {
-        $userId = $request->input('user_id');
-        $query->where('user_id', $userId);
-    }
-
-    if ($request->has('payment_method')) {
-        $paymentMethod = $request->input('payment_method');
-        $query->where('payment_method', $paymentMethod);
-    }
-
-    if ($request->has('status')) {
-        $status = $request->input('status');
-        $query->where('status', $status);
-    }
-   
-
-    $secondTableData = $query->get();
-
-    return view('app.reports.ShowSalesReport', compact('secondTableData', 'selectedDate'));
-}
-
 
     public function StaffReport(Request $request)
     {
@@ -163,14 +140,13 @@ class ReportController extends Controller
             ->groupBy('users.name')
             ->orderBy('schedules.start_time');
 
-        
-
         // Filter by user ID
         if ($request->has('user_id')) {
             $userId = $request->input('user_id');
             $query->where('users.id', $userId);
         }
 
+        // Retrieve staff report data
         $datas = $query->get();
 
         return view('app.reports.StaffReport', compact('datas'));
